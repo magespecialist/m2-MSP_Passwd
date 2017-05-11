@@ -1,8 +1,8 @@
 # MSP Passwd
 
-Simple digest auth module for Magento 2.
-It will display a digest auth login windows to protect your staging/preview environment.
-It can be also used to provide an additional security layer to your Magento backend.
+Simple digest auth module for Magento 2.<br />
+It will display a digest auth login windows to protect your **staging/preview** environment.<br />
+It can be also used to provide an **additional security layer** to your Magento backend.<br />
 
 You can have **different username and password** for fronted and backend.
 
