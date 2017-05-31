@@ -26,6 +26,8 @@ use MSP\Passwd\Api\AuthInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\Action\Action;
+use MSP\SecuritySuiteCommon\Api\LogManagementInterface;
+use Magento\Framework\Event\ManagerInterface as EventInterface;
 
 class Auth implements AuthInterface
 {
@@ -44,15 +46,23 @@ class Auth implements AuthInterface
      */
     private $scopeConfig;
 
+    /**
+     * @var EventInterface
+     */
+    private $event;
+
     public function __construct(
         ResponseInterface $response,
         ActionFlag $actionFlag,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        LogManagementInterface $logManagement,
+        EventInterface $event
     )
     {
         $this->response = $response;
         $this->actionFlag = $actionFlag;
         $this->scopeConfig = $scopeConfig;
+        $this->event = $event;
     }
 
     /**
@@ -107,6 +117,11 @@ class Auth implements AuthInterface
                         return true;
                     }
                 }
+
+                $this->event->dispatch(LogManagementInterface::EVENT_ACTIVITY, [
+                    'module' => 'MSP_Passwd',
+                    'message' => 'Invalid username/password',
+                ]);
             }
 
             return false;
