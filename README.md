@@ -8,7 +8,7 @@ You can have **different username and password** for fronted and backend.
 
 > Member of **MSP Security Suite**
 >
-> See: https://github.com/magespecialist/m2-MSP_SecuritySuiteFull
+> See: https://github.com/magespecialist/m2-MSP_Security_Suite
 
 Did you lock yourself out from Magento backend? <a href="https://github.com/magespecialist/m2-MSP_Passwd#emergency-commandline-disable">click here.</a>
 
