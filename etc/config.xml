@@ -22,14 +22,14 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
-        <msp_securitysuite>
-            <passwd>
+        <msp_securitysuite_passwd>
+            <general>
                 <backend_enabled>0</backend_enabled>
                 <frontend_enabled>0</frontend_enabled>
 
                 <backend_ip_whitelist>127.0.0.1</backend_ip_whitelist>
                 <frontend_ip_whitelist>127.0.0.1</frontend_ip_whitelist>
-            </passwd>
-        </msp_securitysuite>
+            </general>
+        </msp_securitysuite_passwd>
     </default>
 </config>

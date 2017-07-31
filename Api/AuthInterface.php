@@ -25,15 +25,15 @@ interface AuthInterface
     const AREA_FRONTEND = 'frontend';
     const AREA_BACKEND = 'backend';
 
-    const XML_PATH_BACKEND_ENABLED = 'msp_securitysuite/passwd/backend_enabled';
-    const XML_PATH_BACKEND_USER = 'msp_securitysuite/passwd/backend_user';
-    const XML_PATH_BACKEND_PASS = 'msp_securitysuite/passwd/backend_pass';
-    const XML_PATH_BACKEND_IP_WHITELIST = 'msp_securitysuite/passwd/backend_ip_whitelist';
+    const XML_PATH_BACKEND_ENABLED = 'msp_securitysuite_passwd/general/backend_enabled';
+    const XML_PATH_BACKEND_USER = 'msp_securitysuite_passwd/general/backend_user';
+    const XML_PATH_BACKEND_PASS = 'msp_securitysuite_passwd/general/backend_pass';
+    const XML_PATH_BACKEND_IP_WHITELIST = 'msp_securitysuite_passwd/general/backend_ip_whitelist';
 
-    const XML_PATH_FRONTEND_ENABLED = 'msp_securitysuite/passwd/frontend_enabled';
-    const XML_PATH_FRONTEND_USER = 'msp_securitysuite/passwd/frontend_user';
-    const XML_PATH_FRONTEND_PASS = 'msp_securitysuite/passwd/frontend_pass';
-    const XML_PATH_FRONTEND_IP_WHITELIST = 'msp_securitysuite/passwd/frontend_ip_whitelist';
+    const XML_PATH_FRONTEND_ENABLED = 'msp_securitysuite_passwd/general/frontend_enabled';
+    const XML_PATH_FRONTEND_USER = 'msp_securitysuite_passwd/general/frontend_user';
+    const XML_PATH_FRONTEND_PASS = 'msp_securitysuite_passwd/general/frontend_pass';
+    const XML_PATH_FRONTEND_IP_WHITELIST = 'msp_securitysuite_passwd/general/frontend_ip_whitelist';
 
     /**
      * Return true if access is authorized
