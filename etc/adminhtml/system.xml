@@ -22,37 +22,43 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <section id="msp_securitysuite_passwd" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="msp_securitysuite_passwd" translate="label" type="text" sortOrder="60" showInDefault="1"
+                 showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>Passwd</label>
             <tab>msp_securitysuite</tab>
             <resource>MSP_SecuritySuite::config</resource>
 
-            <group id="general" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="general" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
                 <label>General</label>
                 <comment><![CDATA[
                     <div class="msp_securitysuite-comment">
-                        This module is a memeber of <strong><a target="_blank" href="https://github.com/magespecialist/m2-MSP_Security_Suite">MageSpecialist Security Suite</a></strong>. <a target="_blank" href="https://github.com/magespecialist/m2-MSP_Security_Suite">Click here</a> to see all the Security Suite modules.<br />
+                        This module is a member of <strong><a target="_blank" href="https://github.com/magespecialist/m2-MSP_Security_Suite">MageSpecialist Security Suite</a></strong>. <a target="_blank" href="https://github.com/magespecialist/m2-MSP_Security_Suite">Click here</a> to see all the Security Suite modules.<br />
                         Source code, installation and configuration guide: <a target="_blank" href="https://github.com/magespecialist/m2-MSP_Security_Suite">https://github.com/magespecialist/m2-MSP_Security_Suite</a>.
                     </div>
                 ]]></comment>
-                <field id="backend_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="backend_enabled" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
                     <label>Enable on backend</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="backend_user" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="backend_user" translate="label" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
                     <label>Backend username</label>
                     <depends>
                         <field id="msp_securitysuite_passwd/general/backend_enabled">1</field>
                     </depends>
                 </field>
-                <field id="backend_pass" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="backend_pass" translate="label" type="password" sortOrder="30" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
                     <label>Backend password</label>
                     <depends>
                         <field id="msp_securitysuite_passwd/general/backend_enabled">1</field>
                     </depends>
                 </field>
-                <field id="backend_ip_whitelist" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="backend_ip_whitelist" translate="label" type="text" sortOrder="40" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
                     <label>Backend IP whitelist</label>
                     <comment>Comma separated (eg.: 192.168.1.10, 192.168.0.0/24)</comment>
                     <depends>
@@ -60,23 +66,27 @@
                     </depends>
                 </field>
 
-                <field id="frontend_enabled" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="frontend_enabled" translate="label" type="select" sortOrder="100" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>Enable on frontend</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="frontend_user" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="frontend_user" translate="label" type="text" sortOrder="110" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>Backend username</label>
                     <depends>
                         <field id="msp_securitysuite_passwd/general/frontend_enabled">1</field>
                     </depends>
                 </field>
-                <field id="frontend_pass" translate="label" type="password" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="frontend_pass" translate="label" type="password" sortOrder="120" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>Backend password</label>
                     <depends>
                         <field id="msp_securitysuite_passwd/general/frontend_enabled">1</field>
                     </depends>
                 </field>
-                <field id="frontend_ip_whitelist" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="frontend_ip_whitelist" translate="label" type="text" sortOrder="130" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>Frontend IP whitelist</label>
                     <comment>Comma separated (eg.: 192.168.1.10, 192.168.0.0/24)</comment>
                     <depends>

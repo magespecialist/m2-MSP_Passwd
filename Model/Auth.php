@@ -26,8 +26,7 @@ use MSP\Passwd\Api\AuthInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\Action\Action;
-use MSP\SecuritySuiteCommon\Api\LogManagementInterface;
-use Magento\Framework\Event\ManagerInterface as EventInterface;
+use MSP\SecuritySuiteCommon\Api\AlertInterface;
 
 class Auth implements AuthInterface
 {
@@ -47,22 +46,21 @@ class Auth implements AuthInterface
     private $scopeConfig;
 
     /**
-     * @var EventInterface
+     * @var AlertInterface
      */
-    private $event;
+    private $alert;
 
     public function __construct(
         ResponseInterface $response,
         ActionFlag $actionFlag,
         ScopeConfigInterface $scopeConfig,
-        LogManagementInterface $logManagement,
-        EventInterface $event
-    )
-    {
+        AlertInterface $alert
+    ) {
+    
         $this->response = $response;
         $this->actionFlag = $actionFlag;
         $this->scopeConfig = $scopeConfig;
-        $this->event = $event;
+        $this->alert = $alert;
     }
 
     /**
@@ -70,6 +68,7 @@ class Auth implements AuthInterface
      * @param Http $request
      * @param string $area
      * @return bool
+     * @SuppressWarnings(PHPMD.ShortVariables)
      */
     public function isAuthorized(Http $request, $area)
     {
@@ -94,7 +93,7 @@ class Auth implements AuthInterface
                     AuthInterface::XML_PATH_BACKEND_PASS
             );
 
-            if ($this->getIpIsMatched($clientIp, $whitelist)) {
+            if ($this->isIpMatched($clientIp, $whitelist)) {
                 return true;
             }
 
@@ -102,6 +101,7 @@ class Auth implements AuthInterface
             $digest = $this->getHttpDigestParse($request->getServer('PHP_AUTH_DIGEST'));
             if ($digest) {
                 if ($digest['username'] == $user) {
+                    // @codingStandardsIgnoreStart
                     $a1 = md5($digest['username'] . ':' . $realm . ':' . $pass);
                     $a2 = md5($request->getServer('REQUEST_METHOD') . ':' . $digest['uri']);
                     $validResponse = md5(
@@ -112,16 +112,19 @@ class Auth implements AuthInterface
                         $digest['qop'] . ':' .
                         $a2
                     );
+                    // @codingStandardsIgnoreEnd
 
                     if ($digest['response'] == $validResponse) {
                         return true;
                     }
                 }
 
-                $this->event->dispatch(LogManagementInterface::EVENT_ACTIVITY, [
-                    'module' => 'MSP_Passwd',
-                    'message' => 'Invalid username/password',
-                ]);
+                $this->alert->event(
+                    'MSP_Passwd',
+                    'Invalid username/password',
+                    AlertInterface::LEVEL_WARNING,
+                    $digest['username']
+                );
             }
 
             return false;
@@ -147,7 +150,7 @@ class Auth implements AuthInterface
      */
     private function getHttpDigestParse($authDigest)
     {
-        $needed_parts = [
+        $neededParts = [
             'nonce' => 1,
             'nc' => 1,
             'cnonce' => 1,
@@ -157,16 +160,16 @@ class Auth implements AuthInterface
             'response' => 1
         ];
         $data = [];
-        $keys = implode('|', array_keys($needed_parts));
+        $keys = implode('|', array_keys($neededParts));
 
         preg_match_all('@(' . $keys . ')=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', $authDigest, $matches, PREG_SET_ORDER);
 
         foreach ($matches as $m) {
             $data[$m[1]] = $m[3] ? $m[3] : $m[4];
-            unset($needed_parts[$m[1]]);
+            unset($neededParts[$m[1]]);
         }
 
-        return $needed_parts ? false : $data;
+        return $neededParts ? false : $data;
     }
 
     /**
@@ -181,10 +184,12 @@ class Auth implements AuthInterface
             $realm = $this->getRealm($area);
 
             $this->response->setHttpResponseCode(401);
+            // @codingStandardsIgnoreStart
             $this->response->setHeader(
                 'WWW-Authenticate',
                 'Digest realm="' . $realm . '",qop=auth,nonce="' . uniqid() . '",opaque="' . md5($realm) . '"'
             );
+            // @codingStandardsIgnoreEnd
             $this->response->setBody('<h1>Unauthorized</h1>');
 
             $this->response->sendHeaders();
@@ -195,11 +200,11 @@ class Auth implements AuthInterface
 
     /**
      * Return true if IP is in range
-     * @param  $ip
-     * @param  $range
+     * @param string $ipAddress
+     * @param string $range
      * @return bool
      */
-    private function getIpInRange($ip, $range)
+    private function isIpInRange($ipAddress, $range)
     {
         if (strpos($range, '/') === false) {
             $range .= '/32';
@@ -207,7 +212,7 @@ class Auth implements AuthInterface
 
         list($range, $netmask) = explode('/', $range, 2);
         $rangeDecimal = ip2long($range);
-        $ipDecimal = ip2long($ip);
+        $ipDecimal = ip2long($ipAddress);
         $wildcardDecimal = pow(2, (32 - $netmask)) - 1;
         $netmaskDecimal = ~$wildcardDecimal;
 
@@ -216,14 +221,14 @@ class Auth implements AuthInterface
 
     /**
      * Return true if IP is matched in a range list
-     * @param  $ip
-     * @param  array $ranges
+     * @param string $ipAddress
+     * @param array $ranges
      * @return bool
      */
-    private function getIpIsMatched($ip, array $ranges)
+    private function isIpMatched($ipAddress, array $ranges)
     {
         foreach ($ranges as $range) {
-            if ($this->getIpInRange($ip, $range)) {
+            if ($this->isIpInRange($ipAddress, $range)) {
                 return true;
             }
         }
